@@ -3,6 +3,7 @@ import {
     findTuitByUser, findAllTuits,
     findTuitById, updateTuit, deleteTuit
 } from "../services/tuits-service";
+
 import {createUser, deleteUsersByUsername, findUserById} from "../services/users-service";
 
 describe('can create tuit with REST API', () => {
@@ -26,8 +27,7 @@ describe('can create tuit with REST API', () => {
     // clean up after test runs
     afterAll(() => {
         // remove any data we created
-        //deleteTuit(ripleyTuit._id);
-        return deleteTuit(newTuit._id), deleteUsersByUsername(ripley.username);
+        return deleteUsersByUsername(ripley.username);
     })
 
     test('can insert new tuits with REST API', async () => {
@@ -36,6 +36,7 @@ describe('can create tuit with REST API', () => {
         const newTuit = await createTuit(newUser._id, ripleyTuit)
         // verify inserted user's properties match parameter user
         expect(newTuit.tuit).toEqual(ripleyTuit.tuit);
+        await deleteTuit(newTuit._id);
     });
 });
 
@@ -62,7 +63,7 @@ describe('can delete tuit wtih REST API', () => {
     afterAll(() => {
         // remove any data we created
         //deleteTuit(ripleyTuit._id);
-        return deleteTuit(newTuit._id), deleteUsersByUsername(ripley.username);
+        return deleteUsersByUsername(ripley.username);
     })
 
     test('can insert new tuits with REST API', async () => {
@@ -101,7 +102,7 @@ describe('can retrieve a tuit by their primary key with REST API', () => {
     afterAll(() => {
         // remove any data we created
         //deleteTuit(ripleyTuit._id);
-        return deleteTuit(newTuit._id), deleteUsersByUsername(ripley.username);
+        return deleteUsersByUsername(ripley.username);
     })
 
     test('can get new tuits with REST API', async () => {
@@ -111,6 +112,7 @@ describe('can retrieve a tuit by their primary key with REST API', () => {
         const retrievedTuit = await findTuitById(newTuit._id)
         // verify inserted tuit
         expect(retrievedTuit.tuit).toEqual(ripleyTuit.tuit);
+        await deleteTuit(newTuit._id);
     });
 });
 
@@ -121,23 +123,16 @@ describe('can retrieve all tuits with REST API', () => {
         email: 'ellenripley@aliens.com'
     };
 
-    const ripleyTuit = {
-        tuit: 'test'
+    const ripleyTuit1 = {
+        tuit: 'test1'
     }
-    const tuits = [
-        "text1", "text2", "text3"
-    ];
+    const ripleyTuit2 = {
+        tuit: 'test2'
+    }
 
     // setup test before running test
     beforeAll(() => {
         // remove any/all users to make sure we create it in the test
-        //deleteTuit(ripleyTuit._id);
-        // const newUser = createUser(ripley);
-        // tuits.map((t) =>
-        //     createTuit(
-        //     {
-        //     tuit: {t}
-        //     }, newUser))
         return deleteUsersByUsername(ripley.username);
     })
 
@@ -145,17 +140,26 @@ describe('can retrieve all tuits with REST API', () => {
     afterAll(() => {
         // remove any data we created
         //deleteTuit(ripleyTuit._id);
-        return deleteTuit(newTuit._id), deleteUsersByUsername(ripley.username);
+        return deleteUsersByUsername(ripley.username);
     })
 
     test('can get new tuits with REST API', async () => {
         // insert new user in the database
         const newUser = await createUser(ripley);
-        const newTuit = await createTuit(newUser._id, ripleyTuit)
+        const newTuit1 = await createTuit(newUser._id, ripleyTuit1)
+        const newTuit2 = await createTuit(newUser._id, ripleyTuit2)
         const retrievedTuits = await findAllTuits()
+        expect(retrievedTuits.length).toBeGreaterThanOrEqual(2);
+
+        const retrievedTuit1 = await findTuitById(newTuit1._id)
         // verify inserted tuit
-        console.log(retrievedTuits)
-        console.log(retrievedTuits.length)
-        //expect(retrievedTuit.tuit).toEqual(ripleyTuit.tuit);
+        expect(retrievedTuit1.tuit).toEqual(ripleyTuit1.tuit);
+        const retrievedTuit2 = await findTuitById(newTuit2._id)
+        // verify inserted tuit
+        expect(retrievedTuit2.tuit).toEqual(ripleyTuit2.tuit);
+
+
+        await deleteTuit(newTuit1._id);
+        await deleteTuit(newTuit2._id);
     });
 });

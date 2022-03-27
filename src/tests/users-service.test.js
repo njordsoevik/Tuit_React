@@ -137,7 +137,7 @@ describe('findAllUsers',  () => {
     const users = await findAllUsers();
 
     // there should be a minimum number of users
-    expect(users.length).toBeGreaterThanOrEqual(usernames.length-1);
+    expect(users.length).toBeGreaterThanOrEqual(usernames.length);
 
     // let's check each user we inserted
     const usersWeInserted = users.filter(

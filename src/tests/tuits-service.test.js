@@ -43,7 +43,6 @@ describe('can create tuit with REST API', () => {
 });
 
 describe('can delete tuit wtih REST API', () => {
-    // TODO: implement this
     const ripley = {
         username: 'ellenripley',
         password: 'lv426',

@@ -1,15 +1,10 @@
 /**
  * @jest-environment node
  */
-import Tuits from "../components/tuits";
-import {screen, render} from "@testing-library/react";
-import {HashRouter} from "react-router-dom";
-import {createTuit, deleteTuit, findAllTuits, findTuitById} from "../services/tuits-service";
-import axios from "axios";
-import {createUser, deleteUsersByUsername, findUserById} from "../services/users-service";
+import {createTuit, deleteTuit, findTuitById} from "../services/tuits-service";
+import {createUser, deleteUsersByUsername} from "../services/users-service";
 import {findAllTuitsDislikedByUser, userDislikesTuit} from "../services/dislikes-service";
 
-//jest.mock('axios');
 const ripley = {
     username: 'ellenripley',
     password: 'lv426',

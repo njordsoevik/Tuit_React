@@ -24,28 +24,3 @@ test('tuit list renders static tuit array', () => {
     expect(linkElement).toBeInTheDocument();
 
 });
-
-test('tuit list renders async', async () => {
-    const tuits = await findAllTuits();
-    render(
-        <HashRouter>
-            <Tuits tuits={tuits}/>
-        </HashRouter>);
-    const linkElement = screen.getByText(/larry tuit/i);
-    expect(linkElement).toBeInTheDocument();
-})
-
-test('tuit list renders mocked', async () => {
-    const mock = jest.spyOn(axios, 'get');
-    mock.mockImplementation(() =>
-        Promise.resolve({ data: {tuits: MOCKED_TUITS} }));
-    const response = await findAllTuits();
-    const tuits = response.tuits;
-    render(
-        <HashRouter>
-            <Tuits tuits={tuits}/>
-        </HashRouter>);
-    const tuit = screen.getByText(/ellen\'s tuit/i);
-    expect(tuit).toBeInTheDocument();
-    mock.mockRestore();
-});

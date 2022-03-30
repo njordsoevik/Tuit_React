@@ -82,7 +82,6 @@ describe('can delete tuit wtih REST API', () => {
 });
 
 describe('can retrieve a tuit by their primary key with REST API', () => {
-    // TODO: implement this
     const ripley = {
         username: 'ellenripley',
         password: 'lv426',
@@ -110,8 +109,8 @@ describe('can retrieve a tuit by their primary key with REST API', () => {
     test('can get new tuits with REST API', async () => {
         // insert new user in the database
         const newUser = await createUser(ripley);
-        const newTuit = await createTuit(newUser._id, ripleyTuit)
-        const retrievedTuit = await findTuitById(newTuit._id)
+        const newTuit = await createTuit(newUser._id, ripleyTuit);
+        const retrievedTuit = await findTuitById(newTuit._id);
         // verify inserted tuit
         expect(retrievedTuit.tuit).toEqual(ripleyTuit.tuit);
         await deleteTuit(newTuit._id);

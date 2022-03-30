@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL = 'https://tuit-a4.herokuapp.com';
 
 const SECURITY_API = `${BASE_URL}/api/auth`;
 
